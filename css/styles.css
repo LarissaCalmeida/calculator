@@ -1,0 +1,262 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    font-family: 'Spartan', sans-serif;
+    font-size: 32px;
+}
+
+:root {
+    /* Theme 1 */
+    --theme-main-background: hsl(222, 26%, 31%);
+    --theme-toggler-background: hsl(223, 31%, 20%);
+    --theme-screen-background: hsl(224, 36%, 15%);
+
+    --theme-key-background: hsl(225, 21%, 49%);
+    --theme-key-shadow: hsl(224, 28%, 35%);
+    
+    --theme-key-secondary-background: hsl(6, 63%, 50%);
+    --theme-key-secondary-shadow: hsl(6, 70%, 34%);
+
+    --theme-key-primary-background: hsl(30, 25%, 89%);
+    --theme-key-primary-shadow: hsl(28, 16%, 65%);
+
+    --theme-text-very-dark: hsl(221, 14%, 31%);
+    --theme-text-white: white; 
+
+    /* Theme 2 */
+    --theme2-main-background: hsl(0, 0%, 90%);
+    --theme2-toggler-background: hsl(0, 5%, 81%);
+    --theme2-screen-background: hsl(0, 0%, 93%);
+
+    --theme2-key-background: hsl(185, 42%, 37%);
+    --theme2-key-shadow: hsl(185, 58%, 25%);
+    
+    --theme2-key-orange-background: hsl(25, 98%, 40%);
+    --theme2-key-dark-orange-shadow: hsl(25, 99%, 27%);
+
+    --theme2-key-yellow-background: hsl(45, 7%, 89%);
+    --theme2-key-orange-shadow: hsl(35, 11%, 61%);
+
+    --theme2-text-yellow: hsl(60, 10%, 19%);
+    --theme2-text-white: white; 
+}
+
+body {
+    background: var(--theme-main-background);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    transition: all 0.3s;
+}
+
+button {
+    cursor: pointer;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+}
+
+.container header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.container header h1,
+.container header span {
+    color: var(--theme-text-white);
+    transition: all 0.3s;
+}
+
+.container header span {
+    font-size: 13px;
+}
+
+.container-theme .theme{
+    display: flex;
+    align-items: flex-end;
+}
+
+.container-toggle-theme {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+}
+
+.container .number-theme {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 5px;
+}
+
+.container .toggle-theme {
+    content: " ";
+    width: 80px;
+    height: 30px;
+    background: hsl(223, 31%, 20%);
+    border-radius: 20px;
+    position: relative;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5px;
+
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.container .toggle-theme input {
+    display: none;
+}
+
+.container .toggle-theme label {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.theme > span {
+    margin-bottom: 5px;
+}
+
+.container .toggle-theme .circle {
+    content: " ";
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--theme-key-secondary-background);
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.container .toggle-theme .circle:hover {
+    background: var(--theme-key-secondary-shadow);
+}
+
+.container .screen {
+    width: 100%;
+    height: 150px;
+    background: var(--theme-screen-background);
+    margin: 1rem 0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1rem;
+    transition: all 0.3s;
+}
+
+.container .screen .result {
+    color: var(--theme-text-white);
+    font-size: 2rem;
+    transition: all 0.3s;
+}
+
+.container .main {
+    width: 100%;
+    background: var(--theme-toggler-background);
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+
+.container .row {
+    margin: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container .btn {
+    border-radius: 10px;
+    width: calc(100%/4 - 1rem);
+    border: none;
+    transition: all 0.3s;
+}
+
+.container .row .btn:not(:last-child) {
+    margin-right: 1rem;
+}
+
+.container .btn-primary {
+    padding: 0.3rem 0;
+    background: var(--theme-key-primary-background);
+    color: var(--theme-text-very-dark);
+    box-shadow: 0px 5px var(--theme-key-primary-shadow);
+}
+
+.container .btn-secondary {
+    background: var(--theme-key-background);
+    color: var(--theme-text-white);
+    box-shadow: 0px 5px var(--theme-key-shadow);
+    font-size: 18px;
+    padding: 0.6rem 0;
+
+}
+
+.container .row:last-child .btn {
+    width: calc(100%/2 - 0.8rem);
+}
+
+.container .btn-result {
+    color: var(--theme-text-white);
+    background-color: var(--theme-key-secondary-background);
+    padding: 0.4rem 0;
+    box-shadow: 0px 5px var(--theme-key-secondary-shadow);
+}
+
+.attribution {
+    margin-top: 1rem;
+    font-size: 11px; 
+    text-align: center;
+    color: var(--theme-text-white);
+}
+
+.attribution a {
+    color: var(--theme-screen-background);
+    font-size: 14px; 
+}
+
+@media screen and (max-width: 650px){
+    .container {
+        width: 90%
+    }
+
+    .container .btn {
+        width: calc(100%/4);
+    }
+
+    .container .row .btn:not(:last-child) {
+        margin-right: 0.5rem;
+    }
+
+    .container .row {
+        margin: 0.5rem;
+    }
+
+    .container .row:last-child .btn {
+        width: calc(100%/2);
+    }
+}
+
+@media screen and (max-width: 470px){
+    .container .screen .result {
+        font-size: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 365px){
+    .container .screen .result {
+        font-size: 1rem;
+    }
+}
