@@ -1,3 +1,58 @@
+const calculator = {
+    operandoA: "",
+    isOperandoA: true,
+    isOperador: false,
+    pointFloat: false,
+    maxNumberPointFloat: 3,
+    numberPointFloat: 0,
+    operandoB: "",
+    operador: "",
+    allOperador: ["+", "-", "x", "/"],
+
+    showScreen: function(info) {
+        const infoScreen = document.querySelector('.result');
+        infoScreen.innerHTML = info;
+    },
+
+    del: () => {
+        const info = document.querySelector('.result');
+        const value = info.innerHTML
+        const newInfo = value.slice(0, value.length - 1)
+        
+        info.innerHTML = newInfo
+        
+        return newInfo
+    },
+
+    reset: function() {
+        const info = document.querySelector('.result');
+        info.innerHTML = "0"
+        this.operandoA = "";
+        this.isOperandoA = true;
+        this.isOperador = false
+        this.operandoB = "";
+        this.operador = ""
+    },
+
+    calc: function() {
+        switch(this.operador){
+            case "+":
+                this.operandoA = Number(this.operandoA) + Number(this.operandoB)
+                break
+            case "-":
+                this.operandoA = Number(this.operandoA) - Number(this.operandoB)
+                break
+            case "x":
+                this.operandoA = Number(this.operandoA) * Number(this.operandoB)
+                break
+            case "/":
+                this.operandoA = Number(this.operandoA) / Number(this.operandoB)
+                break
+        }
+    },
+}
+
+
 const changeTheme = () => {
     const theme = document.querySelector('input[name="theme"]:checked').value;
     const toggle = document.querySelector('.circle')
@@ -86,117 +141,120 @@ const changeTheme = () => {
     }
 }
 
-let operandoA = "";
-let isOperandoA = true;
-let isOperador = false
-let operandoB = "";
-let operador = ""
-const allOperador = ["+", "-", "x", "/"];
-let result = "";
 
-const showScreen = (result) => {
-    const resultScreen = document.querySelector('.result');
-    resultScreen.innerHTML = result;
-}
+const verifyPointFloat = (operando) => {
+    const indexPoint = operando.indexOf(".")
+    if(indexPoint === -1){
+        calculator.pointFloat = false;
+        calculator.numberPointFloat = 0;
 
-const del = () => {
-    const result = document.querySelector('.result');
-    const value = result.innerHTML
-    const newResult = value.slice(0, value.length - 1)
-    
-    result.innerHTML = newResult
-    
-    return newResult
-}
+    } else {
+        calculator.pointFloat = true;
 
-const reset = () => {
-    const result = document.querySelector('.result');
-    result.innerHTML = "0"
-    operandoA = "";
-    isOperandoA = true;
-    isOperador = false
-    operandoB = "";
-    operador = ""
-}
-
-const calc = () => {
-    switch(operador){
-        case "+":
-            operandoA = Number(operandoA) + Number(operandoB)
-            break
-        case "-":
-            operandoA = Number(operandoA) - Number(operandoB)
-            break
-        case "x":
-            operandoA = Number(operandoA) * Number(operandoB)
-            break
-        case "/":
-            operandoA = Number(operandoA) / Number(operandoB)
-            break
+        let numberFloat = operando.slice(indexPoint);
+        calculator.numberPointFloat = numberFloat.length;
+        console.log("Números float: ", calculator.numberPointFloat);
     }
 }
 
+const verifyNumberDigits = () => {
+    if(String(calculator.operandoA).length > 8){
+        calculator.showScreen("ERR")
+    } else {
+        calculator.showScreen(calculator.operandoA)
+    }
+}
+
+
+
 const digitScreen = (e) => {
-    console.log(e.target.innerHTML) 
     const digit = Number(e.target.innerHTML)
     const isNumber = !isNaN(Number(e.target.innerHTML))
 
     if(isNumber){
-        console.log(digit)
-        if(isOperandoA && operandoA.length < 8){
-            operandoA = operandoA.concat(digit)
-            showScreen(operandoA)
-        } else if(!isOperandoA && operandoB.length < 8){
-            operandoB = operandoB.concat(digit)
-            showScreen(operandoB)
+        if(calculator.isOperandoA){
+            verifyPointFloat(calculator.operandoA);
+        } else {
+            verifyPointFloat(calculator.operandoB);
+        }
+
+        const showDigitInOperandoA = (calculator.isOperandoA && calculator.operandoA.length < 8) && (calculator.numberPointFloat <= calculator.maxNumberPointFloat);
+        const showDigitInOperandoB = (!calculator.isOperandoA && calculator.operandoB.length < 8) && (calculator.numberPointFloat <= calculator.maxNumberPointFloat);
+
+        if(showDigitInOperandoA){
+            calculator.operandoA = calculator.operandoA.concat(digit)
+            calculator.showScreen(calculator.operandoA)
+
+        } else if(showDigitInOperandoB){
+            calculator.operandoB = calculator.operandoB.concat(digit)
+            calculator.showScreen(calculator.operandoB)
+        }
+
+    } else if (e.target.innerHTML === ".") {
+        if(!calculator.pointFloat){
+            const point = e.target.innerHTML;
+            const showPointInOperandoA = calculator.isOperandoA && calculator.operandoA.length < 8 && calculator.operandoA.length > 0;
+            const showPointInOperandoB = !calculator.isOperandoA && calculator.operandoB.length < 8 && calculator.operandoB.length > 0;
+            
+    
+            if(showPointInOperandoA){
+                calculator.operandoA = calculator.operandoA.concat(point)
+                calculator.showScreen(calculator.operandoA)
+    
+            } else if(showPointInOperandoB){
+                calculator.operandoB = calculator.operandoB.concat(point)
+                calculator.showScreen(calculator.operandoB)
+            }
         }
 
     } else if(e.target.innerHTML === "RESET"){
-        reset()
+        calculator.reset()
 
     } else if(e.target.innerHTML === "DEL"){
-        if(!isOperador){
-            if(isOperandoA){
-                operandoA = del()
+        if(!calculator.isOperador){
+            if(calculator.isOperandoA){
+                calculator.operandoA = calculator.del()
+
+                if(calculator.operandoA.length === 0){
+                    calculator.showScreen("0")
+                }
+
             } else {
-                operandoB = del()
+                calculator.operandoB = calculator.del()
+
+                if(calculator.operandoB.length === 0){
+                    calculator.showScreen(calculator.operandoA)
+                }
             }
         } else {
-            operador = ""
+            calculator.operador = ""
         }
 
-    } else if(allOperador.includes(e.target.innerHTML)){
-        console.log("calculando...")
-        console.log("[Operando A]: ", operandoA);
+    } else if(calculator.allOperador.includes(e.target.innerHTML)){
+        console.log("Calculando...")
+        console.log("[Operando A]: ", calculator.operandoA);
         console.log("[Operador]: ", e.target.innerHTML);
-        console.log("[Operando B]: ", operandoB);
+        console.log("[Operando B]: ", calculator.operandoB);
 
-        if(operandoB != ""){
-            calc()
+        if(calculator.operandoB != ""){
+            calculator.calc()
+            calculator.operandoB = ""
 
-            operandoB = ""
-            if(operandoA.length > 8){
-                showScreen("ERR")
-            } else {
-                showScreen(operandoA)
-            }
+            verifyNumberDigits();
+            
         } else {
-            isOperandoA = false
+            calculator.isOperandoA = false
         }
 
-        operador = e.target.innerHTML
+        calculator.operador = e.target.innerHTML
 
     } else if(e.target.innerHTML === "="){
-        calc()
+        calculator.calc()
 
-        operandoB = ""
-        operador = ""
-
-        if(operandoA.length > 8){
-            showScreen("ERR")
-        } else {
-            showScreen(operandoA)
-        }
+        calculator.operandoB = ""
+        calculator.operador = ""
+        
+        verifyNumberDigits();
     }
 }
 
